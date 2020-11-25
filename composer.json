@@ -2,7 +2,7 @@
     "name": "mikopbx/modulesmartivr",
     "description": "ModuleSmartIVR",
     "require": {
-        "mikopbx/core": "^2020.2.*"
+        "mikopbx/core": "^2020.2.757"
     },
     "autoload": {
         "psr-4": {
