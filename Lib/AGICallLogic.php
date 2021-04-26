@@ -8,6 +8,7 @@
 
 namespace Modules\ModuleSmartIVR\Lib;
 
+use MikoPBX\Common\Models\CallDetailRecords;
 use MikoPBX\Core\Asterisk\AGI;
 use MikoPBX\Modules\PbxExtensionBase;
 use MikoPBX\Common\Models\Extensions;
@@ -36,6 +37,9 @@ class AGICallLogic extends PbxExtensionBase
     private $timeout_extension;
     private $failover_extension;
     private $module_extension;
+
+    private $last_responsible_duration;
+    private $last_responsible_time;
 
     /**
      * SmartIVR constructor.
@@ -80,9 +84,62 @@ class AGICallLogic extends PbxExtensionBase
                 'logger'         => $this->logger,
             ];
 
-            $this->logger->debug  = $settings->debug_mode === '1';
-            $this->web_service_1C = new WebService1C($params1C);
+            $this->web_service_1C            = new WebService1C($params1C);
+            $this->logger->debug             = $settings->debug_mode === '1';
+            $this->last_responsible_time     = $settings->last_responsible_time;
+            $this->last_responsible_duration = ($settings->last_responsible_duration <=0)?30:$settings->last_responsible_duration;
         }
+    }
+
+    /**
+     * Получать номер телефона сотруника, кто последний говори с клиентом.
+     * @param string $number
+     * @param int    $countMin
+     * @return string
+     */
+    private function getLastResponsibleNumber(string $number, int $countMin):string{
+        $responsibleNumber = '';
+        if($this->last_responsible_time <= 0){
+            return $responsibleNumber;
+        }
+        // Вычислим дату начала анализа звонков.
+        $time = date("Y-m-d H:i:s.v", time()-60*$countMin);
+        $innerNumbers = [];
+
+        // Получим внутренние номера SIP.
+        $extensions = Extensions::find('type="SIP" OR type="EXTERNAL"')->toArray();
+        foreach ($extensions as $data){
+            $innerNumbers[] = substr($data['number'], -10);
+        }
+
+        // Получим номер телефона сотрудника, с кем последним говорил клиент.
+        $filter=[
+            'conditions' => "src_num=:src_num: AND start>:data_time:",
+            'order' => 'start desc',
+            'bind'       => [
+                'src_num'   => $number,
+                'data_time' => $time,
+            ]
+        ];
+
+        $cdr = CallDetailRecords::find($filter)->toArray();
+        foreach ($cdr as $row){
+            $dst_num = substr($row['dst_num'], -10);
+            if(in_array($dst_num, $innerNumbers, true)){
+                $this->Verbose("Find responsible number {$responsibleNumber}. ID='{$row['linkedid']}', Date='{$row['start']}'");
+                $status = $this->getExtensionStatus($row['dst_num']);
+                if ($status === -1) {
+                    $this->Verbose("Responsible {$responsibleNumber} -> extension UNKNOWN ($status)");
+                } elseif ($status === 2 || $status === 1) {
+                    $this->Verbose("Responsible {$responsibleNumber} -> extension BUSY ($status)");
+                }else{
+                    $responsibleNumber = $row['dst_num'];
+                }
+                break;
+            }
+        }
+
+        return $responsibleNumber;
     }
 
     /**
@@ -98,6 +155,23 @@ class AGICallLogic extends PbxExtensionBase
         $this->agi->set_variable('AGIEXITONHANGUP', 'yes');
         $this->agi->set_variable('AGISIGHUP', 'yes');
         $this->agi->set_variable('__ENDCALLONANSWER', 'yes');
+
+        $responsibleNumber = $this->getLastResponsibleNumber($this->number, 120);
+        if(!empty($responsibleNumber)){
+            $this->agi->set_variable('__pt1c_UNIQUEID', '');
+            $this->agi->exec(
+                'Dial',
+                "Local/{$responsibleNumber}@{$this->contextInternal}/n,{$this->last_responsible_duration}," . 'TtekKHhU(dial_answer)b(dial_create_chan,s,1)'
+            );
+            $DialStatus = $this->getDialStatus();
+            $this->Verbose("Dial status after connect ({$DialStatus}).");
+            if ('ANSWER' === strtoupper($DialStatus)) {
+                $this->Verbose('Call answered the script sends HANGUP command to PBX');
+                $this->agi->hangup();
+                return;
+            }
+            $this->Verbose('Call did not answer continue the IVR logic');
+        }
 
         $ivr_menu_text = $this->web_service_1C->getIvrMenuText($this->number);
         $ivr_menu_file = null;
@@ -242,7 +316,7 @@ class AGICallLogic extends PbxExtensionBase
             $this->Verbose("Redirect call to the default route ({$extension}).");
             $this->agi->exec_goto($this->contextInternal, (string)$extension, '1');
         } else {
-            $this->Verbose('Call answered the script sends HANGUP command to PBX');
+            $this->Verbose("Call answered the script sends HANGUP command to PBX. State $state | Exten $extension");
             $this->agi->hangup();
         }
     }
@@ -270,7 +344,6 @@ class AGICallLogic extends PbxExtensionBase
             return -1;
         }
         $res = $ami->ExtensionState($number, 'internal-hints');
-
         if (!array_key_exists('Status', $res)){
             return -1;
         }
