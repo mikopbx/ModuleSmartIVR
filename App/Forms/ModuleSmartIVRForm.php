@@ -94,5 +94,9 @@ class ModuleSmartIVRForm extends Form
             $checkAr = ['checked' => 'checked', 'value' => null];
         }
         $this->add(new Check('debug_mode', $checkAr));
+
+        $this->add(new Numeric('last_responsible_time'));
+        $this->add(new Numeric('last_responsible_duration'));
+
     }
 }

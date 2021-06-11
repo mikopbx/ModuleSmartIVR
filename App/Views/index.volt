@@ -62,6 +62,15 @@
         {{ form.render('failover_extension') }}
     </div>
 
+    <div class="ten wide field">
+        <label>{{ t._('module_smivr_lastResponsibleTime') }}</label>
+        {{ form.render('last_responsible_time') }}
+    </div>
+    <div class="ten wide field">
+        <label>{{ t._('module_smivr_lastResponsibleDuration') }}</label>
+        {{ form.render('last_responsible_duration') }}
+    </div>
+
     <div class="field">
         <div class="ui segment">
             <div class="ui toggle checkbox" id="debug-mode-toggle">

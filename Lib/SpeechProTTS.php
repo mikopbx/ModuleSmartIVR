@@ -107,8 +107,10 @@ class SpeechProTTS implements TTSInterface
 
         if (200 === $http_code) {
             $data = json_decode($response, true);
-            foreach ($data as $voice) {
-                $availableVoices[] = $voice['name'];
+            if (is_array($data)){
+                foreach ($data as $voice) {
+                    $availableVoices[] = $voice['name'];
+                }
             }
             $this->logger->writeInfo(
                 'Speechpro returns available voices: ' . implode(

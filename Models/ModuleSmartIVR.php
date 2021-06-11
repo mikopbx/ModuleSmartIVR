@@ -109,9 +109,21 @@ class ModuleSmartIVR extends ModulesModelsBase
     /**
      * Режим отладки модуля
      *
-     * @Column(type="integer", default="0", nullable=true)
+     * @Column(type="integer", default="120", nullable=true)
      */
     public $debug_mode;
+
+    /**
+     * Количество минут, за которое необходимо анализировать CDR
+     * @Column(type="integer", default="30", nullable=true)
+     */
+    public $last_responsible_time;
+
+    /**
+     * Количество секунд. Как должго звонить последнему ответственному.
+     * @Column(type="integer", default="0", nullable=true)
+     */
+    public $last_responsible_duration;
 
     /**
      * Returns dynamic relations between module models and common models

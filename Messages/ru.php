@@ -50,4 +50,6 @@ return [
 
     'module_smivr_TimeoutExtForeignKey'=>'Используется как номер по-умолчанию в модуле умной маршрутизации',
     'module_smivr_FailoverExtForeign'=>'Используется как аварийный номер в модуле умной маршрутизации',
+    'module_smivr_lastResponsibleTime'=>'Количество минут, за которое следует анализировать CDR для поиска ответственного',
+    'module_smivr_lastResponsibleDuration'=>'Количество секунд, как долго звонить последнему ответственному',
 ];
