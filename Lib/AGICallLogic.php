@@ -94,16 +94,15 @@ class AGICallLogic extends PbxExtensionBase
     /**
      * Получать номер телефона сотруника, кто последний говори с клиентом.
      * @param string $number
-     * @param int    $countMin
      * @return string
      */
-    private function getLastResponsibleNumber(string $number, int $countMin):string{
+    private function getLastResponsibleNumber(string $number):string{
         $responsibleNumber = '';
         if($this->last_responsible_time <= 0){
             return $responsibleNumber;
         }
         // Вычислим дату начала анализа звонков.
-        $time = date("Y-m-d H:i:s.v", time()-60*$countMin);
+        $time = date("Y-m-d H:i:s.v", time()-60*$this->last_responsible_time);
         $innerNumbers = [];
 
         // Получим внутренние номера SIP.
@@ -156,7 +155,7 @@ class AGICallLogic extends PbxExtensionBase
         $this->agi->set_variable('AGISIGHUP', 'yes');
         $this->agi->set_variable('__ENDCALLONANSWER', 'yes');
 
-        $responsibleNumber = $this->getLastResponsibleNumber($this->number, 120);
+        $responsibleNumber = $this->getLastResponsibleNumber($this->number);
         if(!empty($responsibleNumber)){
             $this->agi->set_variable('__pt1c_UNIQUEID', '');
             $this->agi->exec(
