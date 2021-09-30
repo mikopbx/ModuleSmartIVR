@@ -147,7 +147,14 @@ class AGICallLogic extends PbxExtensionBase
     public function startIVR(): void
     {
         $this->agi    = new AGI();
+
+        $did          = $this->agi->get_variable('FROM_DID', true);
         $this->number = $this->agi->request['agi_callerid'];
+        if(empty($did) && mb_strlen($this->number) <= 4){
+            $this->agi->verbose('Use 777777777 as caller id...', 3);
+            // Это тестовый внутренний вызов;
+            $this->number = '777777777';
+        }
         $this->logger->writeInfo("Preparing IVR for {$this->number}");
         $DialStatus = '';
         $this->agi->exec('Ringing', '');
