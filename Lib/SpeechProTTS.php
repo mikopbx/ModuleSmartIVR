@@ -107,7 +107,7 @@ class SpeechProTTS implements TTSInterface
 
         if (200 === $http_code) {
             $data = json_decode($response, true);
-            if (is_array($data)){
+            if (is_array($data)) {
                 foreach ($data as $voice) {
                     $availableVoices[] = $voice['name'];
                 }
@@ -142,12 +142,11 @@ class SpeechProTTS implements TTSInterface
      */
     public function Synthesize($text, $voice): ?string
     {
-        $this->logger->writeInfo('Start synthesis by Speechpro');
-        $this->logger->writeInfo($text);
+        $this->logger->writeInfo('Start synthesis by Speechpro:' . PHP_EOL . implode($text) . PHP_EOL . $voice);
 
         if ( ! in_array($voice, $this->voices, true)) {
-            $this->logger->writeInfo("Voice $voice doesn't exist. We will use default Julia8000.");
-            $voice = 'Julia8000';
+            $this->logger->writeInfo("Voice $voice doesn't exist. We will use default Julia_8000n.");
+            $voice = 'Julia_8000n';
         }
         if (is_array($text) && count($text) > 1) {
             $result = $this->makeSpeechFromTextArray($text, $voice);
@@ -178,21 +177,27 @@ class SpeechProTTS implements TTSInterface
     private function makeSpeechFromTextArray($arr_text_to_speech, $voice): ?string
     {
         $this->messages[] = 'We got array of sentences';
-        $trim             = (urldecode($voice) === 'Лидия8000') ? 0 : 0.3;
+        $trim = (urldecode($voice) === 'Lidiya8000' || urldecode($voice) === 'Лидия8000') ? '0' : '0.3';
+        //Этих голосов нет, может уже и нет смысла в тримировании
+        $trim          = '0';
         $ivr_extension    = '.wav';
         $ivr_filename     = md5(implode($arr_text_to_speech) . $voice);
         $exception        = false;
 
         // Проверим нет ли ранее сгенерированного полного файла записи.
         $fullFileName = $this->ttsDir . $ivr_filename . $ivr_extension;
+        $this->logger->writeInfo(
+            'We got array of sentences. Searching cache for result file (for voice ' . $voice . '): ' .
+            PHP_EOL . $fullFileName . ' Trimming silence is ' . $trim . ' sec'
+        );
         if (file_exists($fullFileName) && filesize($fullFileName) > 0) {
             $this->logger->writeInfo(
-                'TTS found in the cache for: ' . urldecode(
+                'TTS found cached result file (for voice ' . $voice . '): ' . PHP_EOL . urldecode(
                     implode(
                         ' ',
                         $arr_text_to_speech
                     )
-                ) . ' file: ' . $fullFileName
+                ) . ' - ' . PHP_EOL . $fullFileName
             );
 
             return $this->ttsDir . $ivr_filename;
@@ -204,7 +209,8 @@ class SpeechProTTS implements TTSInterface
 
         $resultExecArg = ''; // Строка с параметрами SOX для склеивания файла
         $filesList     = [];
-        foreach ($arr_text_to_speech as $text_to_speech) {  // Обойдем все фразы в массиве текстов
+        // Обойдем все фразы в массиве текстов
+        foreach ($arr_text_to_speech as $text_to_speech) {
             $record_file = $this->makeSpeechFromText($text_to_speech, $voice);
             if ($record_file === null) { // Ошибка генерации. используем запись по умолчанию
                 $exception = true;
@@ -215,8 +221,8 @@ class SpeechProTTS implements TTSInterface
                 $extension = 'wav';
             }
 
-            if ($trim > 0) {
-                $command = "sox {$soxarg} {$extension} {$record_file}.{$extension}  /tmp/" . basename(
+            if ($trim !== '0') {
+                $command = "sox {$soxarg} {$extension} {$record_file}.{$extension}  {$this->ttsDir}_tmp_" . basename(
                         $record_file
                     ) . ".{$extension}";
                 // Нужно тримировать записи
@@ -224,8 +230,8 @@ class SpeechProTTS implements TTSInterface
                     $command .= " trim {$trim}";
                 }
                 exec("$command 2>&1");
-                $resultExecArg .= " {$soxarg} {$extension} /tmp/" . basename($record_file) . ".{$extension}";
-                $filesList[]   = '/tmp/' . basename($record_file) . ".{$extension}";
+                $resultExecArg .= " {$soxarg} {$extension} {$this->ttsDir}_tmp_" . basename($record_file) . ".{$extension}";
+                $filesList[]   = "{$this->ttsDir}_tmp_" . basename($record_file) . ".{$extension}";
                 $filesList[]   = "{$record_file}.wav";
             } else {
                 $resultExecArg .= " $soxarg {$extension} {$record_file}.{$extension}";
@@ -233,14 +239,23 @@ class SpeechProTTS implements TTSInterface
             $i++;
         }
 
+        $resultCmd   = [];
         $result_file = null;
         if ( ! $exception) {
+            //сшиваем полученные файлы в один
+            //имя результирующего файла для всего массива с учетом нужного голоса
             $fullFileName = $this->ttsDir . $ivr_filename . $ivr_extension;
-            exec('sox ' . $resultExecArg . ' ' . $fullFileName . ' 2>&1');
+            $this->logger->writeInfo('Try to merge files by command: ' . 'sox ' . $resultExecArg . ' ' . $fullFileName);
+            exec('sox ' . $resultExecArg . ' ' . $fullFileName . ' 2>&1', $resultCmd);
             if (file_exists($fullFileName) && filesize($fullFileName) > 0) {
                 $result_file = $this->ttsDir . $ivr_filename;
+                $this->logger->writeInfo('Result file successfully created : ' . $result_file);
+            } else {
+                $this->logger->writeError('Error creating result file : ' . implode($resultCmd));
+                $resultCmd = [];
             }
         }
+        // Удаляем исходные файлы в папках
         if (count($filesList) > 0) {
             $command = implode(' ', $filesList);
             exec("rm -rf $command 2>&1");
@@ -268,7 +283,9 @@ class SpeechProTTS implements TTSInterface
         // Проверим вдург мы ранее уже генерировали такой файл.
         if (file_exists($fullFileName) && filesize($fullFileName) > 0) {
             $this->logger->writeInfo(
-                'TTS found in the cache for: ' . urldecode($text_to_speech . $voice) . ' file: ' . $fullFileName
+                'TTS found in the cache early created file (voice ' . urldecode($voice) . '): ' . PHP_EOL . urldecode(
+                    $text_to_speech
+                ) . ' - ' . PHP_EOL . $fullFileName
             );
 
             return $this->ttsDir . $speech_filename;
@@ -308,18 +325,19 @@ class SpeechProTTS implements TTSInterface
             }
             exec("/usr/bin/sox -v 0.99 -G '{$fullFileNameFromService}' -c 1 -r 8000 -b 16 '{$fullFileName}' 2>&1");
             if (file_exists($fullFileName)) {
-                // Удалим raw файл.
-                @unlink($fullFileNameFromService);
-
                 // Файл успешно сгененрирован
                 $this->logger->writeInfo(
-                    'Successful generation into: ' . $fullFileNameFromService
-                    . ' file size: ' . filesize($fullFileNameFromService)
+                    'Successful generation : ' . PHP_EOL . $fullFileNameFromService . ' with original file size ' . filesize(
+                        $fullFileNameFromService
+                    )
                 );
+                // Удалим ненужный более raw файл.
+                @unlink($fullFileNameFromService);
 
                 return $this->ttsDir . $speech_filename;
             }
-        } elseif (401 === $http_code && $this->countAuthFailures < 2) {
+        } elseif (401 === $http_code && $this->countAuthFailures <= 2) {
+            $this->logger->writeInfo('Speechpro returns connection error 401. Restarting session...');
             $this->startSessionKey();
 
             return $this->makeSpeechFromText($text_to_speech, $voice);
@@ -336,8 +354,12 @@ class SpeechProTTS implements TTSInterface
             https://cp.speechpro.com we got http-code: ' . $http_code . PHP_EOL . 'We use the next params:' . PHP_EOL . json_encode(
                     $post_vars
                 );
+            if ( ! empty($response)) {
+                $errorDescription .= PHP_EOL . 'Response:' . $response;
+            }
             $this->messages[] = $errorDescription;
             $this->logger->writeError($errorDescription);
+            // Удалим raw файл, если какой-либо создавался.
             if (file_exists($fullFileNameFromService)) {
                 @unlink($fullFileNameFromService);
             }
