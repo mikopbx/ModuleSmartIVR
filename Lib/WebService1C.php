@@ -59,7 +59,7 @@ class WebService1C
                     $result = curl_exec($ch);
                     curl_close($ch);
                 } else {
-                    $endpoint    = 'IVRGenerator4SmartTransfer.1cws';
+                    $endpoint    = 'MIKO_IVRGenerator4SmartTransfer.1cws';
                     $ivrLink     = "$this->database/ws/$endpoint";
                     $ivrUri      = 'http://wiki.miko.ru/doc:1cajam:smarttransfer';
                     $ivrFunction = 'setcallbacknumber';
