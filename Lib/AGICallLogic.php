@@ -336,36 +336,33 @@ class AGICallLogic extends PbxExtensionBase
      */
     private function getExtensionStatus($number): int
     {
-        /**
-         * -1 = Extension not found
-         * 0 = Idle
-         * 1 = In Use
-         * 2 = Busy
-         * 4 = Unavailable
-         * 8 = Ringing
-         * 16 = On Hold
-         */
-        $ami = Util::getAstManager('off');
-        if ( ! $ami->loggedIn()) {
-            return -1;
+        $state   = $this->agi->get_variable("DEVICE_STATE(PJSIP/$number)", true);
+        $dExists = $this->agi->get_variable("DIALPLAN_EXISTS(internal,$number,1)", true);
+        $this->Verbose("DEVICE_STATE: {$state} DIALPLAN_EXISTS: $dExists");
+
+        $stateTable = [
+            'UNKNOWN'       => ['Status'=> -1, 'StatusText' => 'Unknown'],
+            'INVALID'       => ['Status'=> -1, 'StatusText' => 'Unknown'],
+            'NOT_INUSE'     => ['Status'=> 0, 'StatusText' => 'Idle'],
+            'INUSE'         => ['Status'=> 1, 'StatusText' => 'In Use'],
+            'BUSY'          => ['Status'=> 2, 'StatusText' => 'Busy'],
+            'UNAVAILABLE'   => ['Status'=> 4, 'StatusText' => 'Unavailable'],
+            'RINGING'       => ['Status'=> 8, 'StatusText' => 'Ringing'],
+            'ONHOLD'        => ['Status'=> 16, 'StatusText' => 'On Hold'],
+        ];
+
+        if($state === 'INVALID' && $dExists === '1'){
+            $result = $stateTable['NOT_INUSE'];
+        }else{
+            $result = $stateTable[$state]??$stateTable['UNKNOWN'];
         }
-        $res = $ami->ExtensionState($number, 'internal-hints');
-        if (!array_key_exists('Status', $res)){
-            return -1;
+        $status = $result['Status'];
+        try {
+            $json_status = json_encode($result, JSON_THROW_ON_ERROR);
+            $this->Verbose("Extension {$number} state is -> $status. JSON:$json_status");
+        }catch (\JsonException $e) {
+            $this->Verbose("Extension {$number} state is -> $status");
         }
-
-        $status = (int)$res['Status'];
-        if ($status === -1) {
-            // Проверим, есть ли "приложение" в системе.
-            $res    = Extensions::findFirst("number='{$number}'");
-            $status = ($res === null) ? -1 : 0;
-        }
-
-        $json_status = json_encode($res);
-        $this->Verbose("Extension {$number} state is -> $status. JSON:$json_status");
-
-        $ami->disconnect();
-
         return $status;
     }
 
