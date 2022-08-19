@@ -58,6 +58,22 @@ class SmartIVRConf extends ConfigClass
         return $app_ext_conf;
     }
 
+    /**
+     * Кастомизация входящего контекста для конкретного маршрута.
+     *
+     * @param $rout_number
+     *
+     * @return string
+     */
+    public function generateIncomingRoutBeforeDial($rout_number): string
+    {
+        $conf = "";
+        $settings     = ModuleSmartIVR::findFirst();
+        if($settings && $settings->server1chost === '0.0.0.0'){
+            $conf = "same => n,AGI({$this->moduleDir}/agi-bin/SmartIVR_AGI.php)".PHP_EOL;
+        }
+        return $conf;
+    }
 
     /**
      *  Process CoreAPI requests under root rights
