@@ -115,7 +115,7 @@ class AGICallLogic extends PbxExtensionBase
 
         // Получим номер телефона сотрудника, с кем последним говорил клиент.
         $filter=[
-            'conditions' => "src_num=:src_num: AND start>:data_time:",
+            'conditions' => "src_num=:src_num: AND start>:data_time: AND billsec>0",
             'order' => 'start desc',
             'bind'       => [
                 'src_num'   => $number,
