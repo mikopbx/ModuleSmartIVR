@@ -37,6 +37,7 @@ class AGICallLogic extends PbxExtensionBase
     private $timeout_extension;
     private $failover_extension;
     private $module_extension;
+    private bool $notUse1c;
 
     private $last_responsible_duration;
     private $last_responsible_time;
@@ -84,6 +85,7 @@ class AGICallLogic extends PbxExtensionBase
                 'logger'         => $this->logger,
             ];
 
+            $this->notUse1c = $settings->server1chost === '0.0.0.0';
             $this->web_service_1C            = new WebService1C($params1C);
             $this->logger->debug             = $settings->debug_mode === '1';
             $this->last_responsible_time     = $settings->last_responsible_time;
@@ -177,6 +179,9 @@ class AGICallLogic extends PbxExtensionBase
                 return;
             }
             $this->Verbose('Call did not answer continue the IVR logic');
+        }
+        if($this->notUse1c){
+            return;
         }
 
         $ivr_menu_text = $this->web_service_1C->getIvrMenuText($this->number);
