@@ -470,7 +470,7 @@ class AGICallLogic extends PbxExtensionBase
      *
      * Вызывается при каждом редактировании настроек модуля
      *
-     * @return PBXApiResult
+     * @return PBXApiResult An object containing the result of the API call.
      * @throws \Exception
      */
     public function selfTest(): PBXApiResult
