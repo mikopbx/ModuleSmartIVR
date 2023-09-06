@@ -225,6 +225,7 @@ class AGICallLogic extends PbxExtensionBase
                 $this->agi->stream_file($filename);
 
                 $this->agi->set_variable('__pt1c_UNIQUEID', '');
+                $this->agi->set_variable('__SMART_DST', $selectednum);
                 $this->agi->exec(
                     'Dial',
                     "Local/{$selectednum}@{$this->contextInternal}/n,30," . 'TtekKHhU(dial_answer)b(dial_create_chan,s,1)'
@@ -324,6 +325,7 @@ class AGICallLogic extends PbxExtensionBase
         $DialStatus = strtoupper($DialStatus);
         $state      = $this->getExtensionStatus($extension);
         if ('ANSWER' !== $DialStatus && $state !== -1) {
+            $this->agi->set_variable('__SMART_DST', '');
             $this->Verbose("Redirect call to the default route ({$extension}).");
             $this->agi->exec_goto($this->contextInternal, (string)$extension, '1');
         } else {
@@ -468,7 +470,7 @@ class AGICallLogic extends PbxExtensionBase
      *
      * Вызывается при каждом редактировании настроек модуля
      *
-     * @return PBXApiResult
+     * @return PBXApiResult An object containing the result of the API call.
      * @throws \Exception
      */
     public function selfTest(): PBXApiResult
