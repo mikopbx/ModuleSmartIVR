@@ -13,8 +13,8 @@ return [
     'SubHeaderModuleSmartIVR'  => 'Генерация голосового меню на лету по данным CRM системы',
 
     'module_smivr_LibraryVer1'   => 'Версия 1.0',
-    'module_smivr_LibraryVer2'   => 'Версия 2.0',
-    'module_smivr_LibraryVer2NotInstalled' => 'Установите модуль панель телефонии 2.0 для 1С, включите и настройте его',
+    'module_smivr_LibraryVer2'   => 'Версия 2.0/4.0',
+    'module_smivr_LibraryVer2NotInstalled' => 'Установите модуль панель телефонии 4.0 для 1С, включите и настройте его',
     'module_smivr_Library1CType' => 'Версия подсистемы интеграции на стороне 1С',
 
     'module_smivr_Server1CHostPort'  => 'Адрес и порт сервера 1С',
@@ -46,7 +46,7 @@ return [
     'module_smivr_UpdateRecord' => 'При изменении статуса модуля обновлены объекты:<br>',
 
     'module_smivr_ErrorOnMakeTestIVR' => 'Ошибка при тестовой генерации голосового меню',
-    'module_smivr_WeGetSettingsFromCTIClient'=>'Будет использоваться канал связи из модуля "Панель телефонии 2.0 для 1С"',
+    'module_smivr_WeGetSettingsFromCTIClient'=>'Будет использоваться канал связи из модуля "Панель телефонии 4.0 для 1С"',
 
     'module_smivr_TimeoutExtForeignKey'=>'Используется как номер по-умолчанию в модуле умной маршрутизации',
     'module_smivr_FailoverExtForeign'=>'Используется как аварийный номер в модуле умной маршрутизации',

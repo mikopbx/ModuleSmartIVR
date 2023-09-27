@@ -215,8 +215,9 @@ class WebService1C
                 } elseif($input_json !== null
                     && json_last_error() === JSON_ERROR_NONE
                     && property_exists($input_obj,'result')
+                    && property_exists($input_obj,'cause')
                     && $input_obj->result==='Error') {
-                    $errorDescription = 'ConnectionToCRMError: '.$input_obj->data . PHP_EOL .
+                    $errorDescription = 'CRM returns error: '.$input_obj->cause . PHP_EOL .
                         'Call will be redirected to failover extension';
                     $this->messages[] = $errorDescription;
                     $this->logger->writeError($errorDescription);
