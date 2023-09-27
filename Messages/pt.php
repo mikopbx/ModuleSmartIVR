@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Será utilizado o canal de comunicação do módulo "Painel de Telefonia 2.0 para 1C"',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Será utilizado o canal de comunicação do módulo "Painel Telefônico 4.0 para 1C"',
     'module_smivr_FailoverExtForeign' => 'Usado como número de emergência no módulo de roteamento inteligente',
     'module_smivr_TimeoutExtForeignKey' => 'Usado como número padrão no módulo de roteamento inteligente',
     'module_smivr_ErrorOnMakeTestIVR' => 'Erro durante a geração de teste do menu de voz',
@@ -29,12 +29,12 @@ return [
     'module_smivr_lastResponsibleDuration' => 'Número de segundos, quanto tempo para ligar para o último responsável',
     'module_smivr_lastResponsibleTime' => 'O número de minutos pelos quais o CDR deve ser analisado para encontrar o responsável',
     'module_smivr_EnableDebugMode' => 'Habilitar modo de depuração de módulo',
-    'module_smivr_LibraryVer2' => 'Versão 2.0',
+    'module_smivr_LibraryVer2' => 'Versão 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Versão 1.0',
     'SubHeaderModuleSmartIVR' => 'Geração de um menu de voz em tempo real de acordo com os dados do sistema CRM',
     'BreadcrumbModuleSmartIVR' => 'Módulo de roteamento de chamada inteligente (IVR inteligente)',
     'repModuleSmartIVR' => 'Módulo de roteamento inteligente -% representa%',
-    'module_smivr_LibraryVer2NotInstalled' => 'Instale o módulo do painel de telefonia 2.0 para 1C, habilite e configure-o',
+    'module_smivr_LibraryVer2NotInstalled' => 'Instale o módulo do painel de telefonia 4.0 para 1C, habilite e configure-o',
     /**
  * Copyright © MIKO LLC - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
