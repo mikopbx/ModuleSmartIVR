@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Kommunikationskanalen från modulen "Telefonipanel 2.0 för 1C" kommer att användas',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Kommunikationskanalen från modulen "Telefonipanel 4.0 för 1C" kommer att användas',
     'module_smivr_FailoverExtForeign' => 'Används som nödnummer i smart routingmodul',
     'module_smivr_TimeoutExtForeignKey' => 'Används som standardnummer i smart routingmodul',
     'module_smivr_ErrorOnMakeTestIVR' => 'Fel under testgenerering av röstmenyn',
@@ -24,11 +24,11 @@ return [
     'module_smivr_UseSSLConnection' => 'Använd SSL',
     'module_smivr_Server1CHostPort' => '1C-serveradress och port',
     'module_smivr_Library1CType' => 'Integrationsdelsystemversion på 1C-sidan',
-    'module_smivr_LibraryVer2NotInstalled' => 'Installera telefonipanel 2.0-modulen för 1C, slå på den och konfigurera den',
+    'module_smivr_LibraryVer2NotInstalled' => 'Installera telefonipanel 4.0-modulen för 1C, aktivera och konfigurera den',
     'module_smivr_lastResponsibleDuration' => 'Antal sekunder, hur länge ska man ringa den sista ansvarig',
     'module_smivr_lastResponsibleTime' => 'Antalet minuter som CDR bör analyseras för att hitta den ansvarige',
     'module_smivr_EnableDebugMode' => 'Aktivera modulfelsökningsläge',
-    'module_smivr_LibraryVer2' => 'Version 2.0',
+    'module_smivr_LibraryVer2' => 'Version 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Version 1.0',
     'SubHeaderModuleSmartIVR' => 'Generering av en röstmeny i farten enligt CRM-systemdata',
     'BreadcrumbModuleSmartIVR' => 'Smart Call Routing Module (Smart IVR)',
