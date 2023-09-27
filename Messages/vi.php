@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Kênh giao tiếp từ mô-đun "Bảng điện thoại 2.0 cho 1C" sẽ được sử dụng',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Kênh liên lạc từ module "Telephony Panel 4.0 for 1C" sẽ được sử dụng',
     'module_smivr_FailoverExtForeign' => 'Được sử dụng làm số khẩn cấp trong mô-đun định tuyến thông minh',
     'module_smivr_TimeoutExtForeignKey' => 'Được sử dụng làm số mặc định trong mô-đun định tuyến thông minh',
     'module_smivr_ErrorOnMakeTestIVR' => 'Lỗi trong khi tạo thử nghiệm menu thoại',
@@ -26,7 +26,7 @@ return [
     'module_smivr_UseSSLConnection' => 'Sử dụng SSL',
     'module_smivr_Server1CHostPort' => 'Địa chỉ máy chủ 1C và cổng',
     'module_smivr_Library1CType' => 'Phiên bản hệ thống con tích hợp ở phía 1C',
-    'module_smivr_LibraryVer2NotInstalled' => 'Cài đặt mô-đun bảng điện thoại 2.0 cho 1C, bật và cấu hình nó',
+    'module_smivr_LibraryVer2NotInstalled' => 'Cài đặt mô-đun bảng điện thoại 4.0 cho 1C, kích hoạt và định cấu hình nó',
     'module_smivr_lastResponsibleDuration' => 'Số giây, bao lâu để gọi cho người phụ trách cuối cùng',
     'module_smivr_lastResponsibleTime' => 'Số phút CDR cần được phân tích để tìm ra người chịu trách nhiệm',
     'module_smivr_EnableDebugMode' => 'Bật chế độ gỡ lỗi mô-đun',
@@ -42,5 +42,5 @@ return [
  * Written by Alexey Portnov, 2 2019
  */
     'mo_ModuleSmartIVR' => 'Mô-đun định tuyến thông minh',
-    'module_smivr_LibraryVer2' => 'Phiên bản 2.0',
+    'module_smivr_LibraryVer2' => 'Phiên bản 2.0/4.0',
 ];
