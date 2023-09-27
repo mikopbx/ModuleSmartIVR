@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => '"Telephony Panel 2.0 for 1C" modülünden gelen iletişim kanalı kullanılacaktır.',
+    'module_smivr_WeGetSettingsFromCTIClient' => '"1C için Telefon Paneli 4.0" modülündeki iletişim kanalı kullanılacaktır',
     'module_smivr_FailoverExtForeign' => 'Akıllı yönlendirme modülünde acil durum numarası olarak kullanılır',
     'module_smivr_TimeoutExtForeignKey' => 'Akıllı yönlendirme modülünde varsayılan numara olarak kullanılır',
     'module_smivr_ErrorOnMakeTestIVR' => 'Ses menüsünün test üretimi sırasında hata',
@@ -24,11 +24,11 @@ return [
     'module_smivr_UseSSLConnection' => 'SSL kullan',
     'module_smivr_Server1CHostPort' => '1C sunucu adresi ve bağlantı noktası',
     'module_smivr_Library1CType' => '1C tarafında entegrasyon alt sistemi sürümü',
-    'module_smivr_LibraryVer2NotInstalled' => '1C için telefon paneli 2.0 modülünü kurun, açın ve yapılandırın',
+    'module_smivr_LibraryVer2NotInstalled' => '1C için telefon paneli 4.0 modülünü kurun, etkinleştirin ve yapılandırın',
     'module_smivr_lastResponsibleDuration' => 'Saniye sayısı, en son sorumlu kişinin aranacağı süre',
     'module_smivr_lastResponsibleTime' => 'Sorumluyu bulmak için CDR\'nin analiz edilmesi gereken dakika sayısı',
     'module_smivr_EnableDebugMode' => 'Modül hata ayıklama modunu etkinleştir',
-    'module_smivr_LibraryVer2' => 'Sürüm 2.0',
+    'module_smivr_LibraryVer2' => 'Sürüm 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Sürüm 1.0',
     'SubHeaderModuleSmartIVR' => 'CRM sistem verilerine göre anında sesli menü oluşturma',
     'BreadcrumbModuleSmartIVR' => 'Akıllı Çağrı Yönlendirme Modülü (Akıllı IVR)',
