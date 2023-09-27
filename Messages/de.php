@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Es wird der Kommunikationskanal aus dem Modul "Telephony Panel 2.0 for 1C" verwendet',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Es wird der Kommunikationskanal aus dem Modul „Telephony Panel 4.0 für 1C“ verwendet',
     'module_smivr_FailoverExtForeign' => 'Wird als Notrufnummer im Smart Routing Modul verwendet',
     'module_smivr_TimeoutExtForeignKey' => 'Wird als Standardnummer im Smart-Routing-Modul verwendet',
     'module_smivr_ErrorOnMakeTestIVR' => 'Fehler bei der Testgenerierung des Sprachmenüs',
@@ -27,9 +27,9 @@ return [
     'module_smivr_Library1CType' => 'Version des Integrationssubsystems auf der 1C-Seite',
     'module_smivr_lastResponsibleDuration' => 'Anzahl der Sekunden, wie lange die letzte verantwortliche Person angerufen werden soll',
     'module_smivr_lastResponsibleTime' => 'Die Anzahl der Minuten, für die das CDR analysiert werden sollte, um den Verantwortlichen zu finden',
-    'module_smivr_LibraryVer2NotInstalled' => 'Installieren Sie das Telefonie-Panel 2.0-Modul für 1C, aktivieren und konfigurieren Sie es',
+    'module_smivr_LibraryVer2NotInstalled' => 'Installieren Sie das Telefonie-Panel 4.0-Modul für 1C, aktivieren und konfigurieren Sie es',
     'module_smivr_EnableDebugMode' => 'Modul Debug-Modus aktivieren',
-    'module_smivr_LibraryVer2' => 'Version 2.0',
+    'module_smivr_LibraryVer2' => 'Version 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Version 1.0',
     'SubHeaderModuleSmartIVR' => 'Generierung eines Sprachmenüs on the fly gemäß CRM-Systemdaten',
     'BreadcrumbModuleSmartIVR' => 'Smart Call Routing-Modul (Smart IVR)',
