@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'モジュール「TelephonyPanel2.0for1C」の通信チャネルを使用します',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'モジュール「テレフォニー パネル 4.0 for 1C」の通信チャネルが使用されます。',
     'module_smivr_FailoverExtForeign' => 'スマートルーティングモジュールで緊急番号として使用されます',
     'module_smivr_TimeoutExtForeignKey' => 'スマートルーティングモジュールのデフォルト番号として使用',
     'module_smivr_ErrorOnMakeTestIVR' => '音声メニューのテスト生成中にエラーが発生しました',
@@ -26,10 +26,10 @@ return [
     'module_smivr_UseSSLConnection' => 'SSLを使用する',
     'module_smivr_Server1CHostPort' => '1Cサーバーのアドレスとポート',
     'module_smivr_Library1CType' => '1C側の統合サブシステムバージョン',
-    'module_smivr_LibraryVer2NotInstalled' => '1C用のテレフォニーパネル2.0モジュールをインストールし、有効にして構成します',
+    'module_smivr_LibraryVer2NotInstalled' => '1C のテレフォニー パネル 4.0 モジュールをインストールし、有効にして構成します',
     'module_smivr_lastResponsibleDuration' => '秒数、最後の担当者に電話をかける時間',
     'module_smivr_lastResponsibleTime' => '責任者を見つけるためにCDRを分析する必要がある分数',
-    'module_smivr_LibraryVer2' => 'バージョン2.0',
+    'module_smivr_LibraryVer2' => 'バージョン2.0/4.0',
     'module_smivr_LibraryVer1' => 'バージョン1.0',
     'SubHeaderModuleSmartIVR' => 'CRMシステムデータに基づくオンザフライでの音声メニューの生成',
     'BreadcrumbModuleSmartIVR' => 'スマートコールルーティングモジュール（スマートIVR）',
