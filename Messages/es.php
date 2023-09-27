@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Se utilizará el canal de comunicación del módulo "Telephony Panel 2.0 for 1C"',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Se utilizará el canal de comunicación del módulo "Panel de Telefonía 4.0 para 1C"',
     'module_smivr_FailoverExtForeign' => 'Utilizado como número de emergencia en el módulo de enrutamiento inteligente',
     'module_smivr_TimeoutExtForeignKey' => 'Utilizado como número predeterminado en el módulo de enrutamiento inteligente',
     'module_smivr_ErrorOnMakeTestIVR' => 'Error durante la generación de prueba del menú de voz',
@@ -28,9 +28,9 @@ return [
     'module_smivr_Library1CType' => 'Versión del subsistema de integración en el lado 1C',
     'module_smivr_lastResponsibleDuration' => 'Número de segundos, cuánto tiempo se debe llamar a la última persona a cargo.',
     'module_smivr_lastResponsibleTime' => 'La cantidad de minutos por los que se debe analizar el CDR para encontrar al responsable',
-    'module_smivr_LibraryVer2NotInstalled' => 'Instale el módulo del panel de telefonía 2.0 para 1C, enciéndalo y configúrelo',
+    'module_smivr_LibraryVer2NotInstalled' => 'Instale el módulo del panel de telefonía 4.0 para 1C, habilítelo y configúrelo',
     'module_smivr_EnableDebugMode' => 'Habilitar el modo de depuración del módulo',
-    'module_smivr_LibraryVer2' => 'Versión 2.0',
+    'module_smivr_LibraryVer2' => 'Versión 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Versión 1.0',
     'SubHeaderModuleSmartIVR' => 'Generación de un menú de voz sobre la marcha según los datos del sistema CRM',
     'BreadcrumbModuleSmartIVR' => 'Módulo de enrutamiento de llamadas inteligente (Smart IVR)',
