@@ -9,10 +9,8 @@
 namespace Modules\ModuleSmartIVR\Setup;
 
 use MikoPBX\Common\Models\Extensions;
-use MikoPBX\Core\System\Util;
-use Modules\ModuleSmartIVR\Models\{ModuleSmartIVR};
+use Modules\ModuleSmartIVR\Models\ModuleSmartIVR;
 use MikoPBX\Modules\Setup\PbxExtensionSetupBase;
-use Throwable;
 
 class PbxExtensionSetup extends PbxExtensionSetupBase
 {
