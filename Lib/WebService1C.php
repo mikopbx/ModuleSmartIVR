@@ -147,7 +147,7 @@ class WebService1C
             $errorDescription = 'ConnectionToCRMError: No access to 1C:Enterprise.' . PHP_EOL .
                 "We use the next params: server:{$this->server_1c_host}," .
                 "port:{$this->server_1c_port}, login: {$this->login}, " .
-                "password: {$this->secret}, method: ${wsfunction}," . PHP_EOL .
+                "password: {$this->secret}, method: $wsfunction," . PHP_EOL .
                 " url: $url" . PHP_EOL . 'We try POST xml: ' . $xmlDocument;
             $this->messages[] = $errorDescription;
             $this->logger->writeError($errorDescription);
@@ -156,7 +156,7 @@ class WebService1C
             return $this->post1cSoapRequest($number, $wslink, $wsfunction, $wsuri, true);
         } elseif (in_array($http_code, [401, 403], false)) {
             $errorDescription = "ConnectionToCRMError: HTTP code $http_code check username or password 1C:Enterprise.
-             Method: ${wsfunction}.";
+             Method: $wsfunction.";
             $this->messages[] = $errorDescription;
             $this->logger->writeError($errorDescription);
             $have_error = true;

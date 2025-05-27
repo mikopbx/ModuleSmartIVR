@@ -32,6 +32,8 @@ class AGICallLogic extends PbxExtensionBase
     private string $contextInternal = 'internal';
     private string $number;
     private array $messages = [];
+    private int $maxMessagesCount = 100; // Maximum number of messages to store
+    private int $maxMessageLength = 1024; // Maximum length of each message
     private WebService1C $web_service_1C;
     private $count_of_repeat_ivr;
     private $timeout_extension;
@@ -306,9 +308,20 @@ class AGICallLogic extends PbxExtensionBase
      */
     public function Verbose($value): void
     {
+        // Truncate value if it's a string and too long
+        if (is_string($value) && strlen($value) > $this->maxMessageLength) {
+            $value = substr($value, 0, $this->maxMessageLength) . '... [truncated]';
+        }
+        
+        // Add to messages array, keeping only the most recent ones
         $this->messages[] = $value;
+        if (count($this->messages) > $this->maxMessagesCount) {
+            array_shift($this->messages);
+        }
+        
         if ($this->agi !== null) {
-            $this->agi->verbose('SMART IVR VERBOSE: ' . escapeshellarg($value), 3);
+            $truncated_value = is_string($value) ? $value : json_encode($value);
+            $this->agi->verbose('SMART IVR VERBOSE: ' . escapeshellarg($truncated_value), 3);
         }
     }
 
