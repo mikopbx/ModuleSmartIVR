@@ -267,6 +267,10 @@ class WebService1C
                 }
                 break;
             }
+            case 'MIKO':{
+                $result = '';
+                break;
+            }
             case 'CRT':
             {
                 if (property_exists($this->tts_settings, 'auth')

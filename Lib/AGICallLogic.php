@@ -279,6 +279,11 @@ class AGICallLogic extends PbxExtensionBase
                 $tts = new YandexTTS($settings);
                 break;
             }
+            case 'MIKO':
+            {
+                $tts = new MikoTTS($settings);
+                break;
+            }
             case 'CRT':
             {
                 $tts = new SpeechProTTS($settings);
