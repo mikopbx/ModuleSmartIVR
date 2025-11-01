@@ -10,7 +10,6 @@
 namespace Modules\ModuleSmartIVR\Lib;
 
 use MikoPBX\Common\Models\PbxSettings;
-use MikoPBX\Core\System\Processes;
 use MikoPBX\Core\System\Util;
 
 class MikoTTS implements TTSInterface
@@ -22,7 +21,7 @@ class MikoTTS implements TTSInterface
     private $logger;
 
     /**
-     * YandexTTS constructor.
+     * MIKO TTS constructor.
      *
      * @param $settings array of settings [ttsDir, auth, logger]
      */
@@ -59,7 +58,7 @@ class MikoTTS implements TTSInterface
             $voice = 'jane';
         }
 
-        $this->logger->writeInfo('Start synthesis by YandexTTS');
+        $this->logger->writeInfo('Start synthesis by MIKO TTS');
         $this->logger->writeInfo($text);
 
         if (is_array($text) && count($text) > 1) {
@@ -75,7 +74,7 @@ class MikoTTS implements TTSInterface
             $this->logger->writeInfo("Synthesis result file: $result");
         } else {
             $this->logger->writeError('Synthesis failure');
-            $this->messages[] = 'Synthesis by YandexTTS failure';
+            $this->messages[] = 'Synthesis by MIKO TTS failure';
         }
 
         return $result;
