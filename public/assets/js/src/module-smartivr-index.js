@@ -13,6 +13,7 @@ const moduleSmartIVR = {
 	$LibrarySelect: $('#library_1c'),
 	$onlyFirstGeneration: $('.only-first-generation'),
 	$onlySecondGeneration: $('.only-second-generation'),
+	$onlyFiveGeneration: $('.only-five-generation'),
 	$moduleStatus: $('#status'),
 	$dirrtyField: null,
 	$submitButton: $('#submitbutton'),
@@ -100,10 +101,17 @@ const moduleSmartIVR = {
 		if (moduleSmartIVR.$formObj.form('get value', 'library_1c') === '1.0') {
 			moduleSmartIVR.$onlySecondGeneration.hide();
 			moduleSmartIVR.$onlyFirstGeneration.show();
+			moduleSmartIVR.$onlyFiveGeneration.hide();
 			moduleSmartIVR.$formObj.form('set value', 'isPT1C', true);
+		} else if(moduleSmartIVR.$formObj.form('get value', 'library_1c') === '5.0'){
+			moduleSmartIVR.$onlySecondGeneration.hide();
+			moduleSmartIVR.$onlyFirstGeneration.hide();
+			moduleSmartIVR.$onlyFiveGeneration.show();
+			moduleSmartIVR.$formObj.form('set value', 'isPT1C', '');
 		} else {
 			moduleSmartIVR.$onlyFirstGeneration.hide();
 			moduleSmartIVR.$onlySecondGeneration.show();
+			moduleSmartIVR.$onlyFiveGeneration.hide();
 			moduleSmartIVR.$formObj.form('set value', 'isPT1C', '');
 		}
 		if (moduleSmartIVR.$dirrtyField===null){
