@@ -273,8 +273,8 @@ class AGICallLogic extends PbxExtensionBase
             'logger' => $this->logger,
         ];
 
-        switch ($ttsSettings->tts_service) {
-            case 'Yandex':
+        switch (strtoupper($ttsSettings->tts_service)) {
+            case 'YANDEX':
             {
                 $tts = new YandexTTS($settings);
                 break;
@@ -415,42 +415,44 @@ class AGICallLogic extends PbxExtensionBase
             }
             case 'ConnectionToExtension':
             {
-                $parameters      = [
-                    'models'     => [
-                        'Extensions' => Extensions::class,
-                    ],
-                    'columns'    => [
-                        'username' => 'Users.username',
-                    ],
-                    'conditions' => 'Extensions.number = :extension: AND Extensions.is_general_user_number=1',
-                    'bind'       => [
-                        'extension' => $extension,
-                    ],
-                    'joins'      => [
-                        'Users' => [
-                            0 => Users::class,
-                            1 => 'Users.id=Extensions.userid',
-                            2 => 'Users',
-                            3 => 'INNER',
+                $userName = $this->web_service_1C->getUserInfoV5($extension);
+                if($userName === null){
+                    $parameters      = [
+                        'models'     => [
+                            'Extensions' => Extensions::class,
                         ],
-                    ],
-                    'limit'      => 1,
-                ];
-                $query      = $this->di->get('modelsManager')->createBuilder($parameters)->getQuery();
-                $extensions = $query->execute();
-                $extensionRecord = null;
-                foreach ($extensions as $record) {
-                    $extensionRecord = $record;
-                    break;
+                        'columns'    => [
+                            'username' => 'Users.username',
+                        ],
+                        'conditions' => 'Extensions.number = :extension: AND Extensions.is_general_user_number=1',
+                        'bind'       => [
+                            'extension' => $extension,
+                        ],
+                        'joins'      => [
+                            'Users' => [
+                                0 => Users::class,
+                                1 => 'Users.id=Extensions.userid',
+                                2 => 'Users',
+                                3 => 'INNER',
+                            ],
+                        ],
+                        'limit'      => 1,
+                    ];
+                    $query      = $this->di->get('modelsManager')->createBuilder($parameters)->getQuery();
+                    $extensions = $query->execute();
+                    $extensionRecord = null;
+                    foreach ($extensions as $record) {
+                        $extensionRecord = $record;
+                        break;
+                    }
+                    if ($extensionRecord) {
+                        $userName = $extensionRecord->username;
+                    }
                 }
-                $abonentName     = '';
-                if ($extensionRecord) {
-                    $abonentName = $extensionRecord->username;
-                }
-                if (empty($abonentName)) {
+                if (empty($userName)) {
                     $resultText = 'Соединяю с номером ' . $extension;
                 } else {
-                    $resultText = 'Соединяю с сотрудником ' . $abonentName;
+                    $resultText = 'Соединяю с сотрудником ' . $userName;
                 }
                 break;
             }

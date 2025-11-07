@@ -97,15 +97,14 @@ const moduleSmartIVR = {
 	 * Изменение версии библиотеки
 	 */
 	cbChangeLibraryType() {
-		if (moduleSmartIVR.$formObj.form('get value', 'library_1c') === '2.0') {
-			moduleSmartIVR.$onlyFirstGeneration.hide();
-			moduleSmartIVR.$onlySecondGeneration.show();
-			moduleSmartIVR.$formObj.form('set value', 'isPT1C', '');
-
-		} else {
+		if (moduleSmartIVR.$formObj.form('get value', 'library_1c') === '1.0') {
 			moduleSmartIVR.$onlySecondGeneration.hide();
 			moduleSmartIVR.$onlyFirstGeneration.show();
 			moduleSmartIVR.$formObj.form('set value', 'isPT1C', true);
+		} else {
+			moduleSmartIVR.$onlyFirstGeneration.hide();
+			moduleSmartIVR.$onlySecondGeneration.show();
+			moduleSmartIVR.$formObj.form('set value', 'isPT1C', '');
 		}
 		if (moduleSmartIVR.$dirrtyField===null){
 			moduleSmartIVR.$dirrtyField=$('#dirrty');
@@ -113,7 +112,6 @@ const moduleSmartIVR = {
 			moduleSmartIVR.$dirrtyField.val(Math.random());
 			moduleSmartIVR.$dirrtyField.trigger('change');
 		}
-
 	}
 	,
 	/**

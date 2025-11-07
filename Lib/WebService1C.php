@@ -185,6 +185,132 @@ class WebService1C
     }
 
     /**
+     * Получение настроек IVR для версии 2.0 / 4.0.
+     * @param string $number
+     * @param int $timeout
+     * @return array|null
+     */
+    private function getIvrDataV2(string $number, int $timeout):?array
+    {
+        $arr_textToSpeech = null;
+        $url = "http://127.0.0.1:8224/getivrtext?number={$number}";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $input_json = curl_exec($ch);
+        $input_obj  = json_decode($input_json, false);
+        curl_close($ch);
+        if ($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'result')
+            && $input_obj->result==='Success'){
+            $this->tts_settings       = $input_obj->data;
+            $this->tts_settings->auth = $this->fillTTSAuthSettings();
+            $arr_textToSpeech         = $input_obj->data->texttospeech;
+        } elseif($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'result')
+            && property_exists($input_obj,'cause')
+            && $input_obj->result==='Error') {
+            $errorDescription = 'CRM returns error: '.$input_obj->cause . PHP_EOL .
+                'Call will be redirected to failover extension';
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        } else {
+            $errorDescription = 'ConnectionToCRMError: Error parse data from 1C:Enterprise.' . PHP_EOL .
+                'Call will be redirected to failover extension';
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        }
+        return $arr_textToSpeech;
+    }
+
+    /**
+     * Получение настроек IVR для версии 5.0.
+     * @param string $number
+     * @param int $timeout
+     * @return array|null
+     */
+    private function getIvrDataV5(string $number, int $timeout):?array
+    {
+        $arr_textToSpeech = null;
+        $url = "http://127.0.0.1:9222/ivr/text?number=$number";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $input_json = curl_exec($ch);
+        $input_obj  = json_decode($input_json, false);
+        curl_close($ch);
+        if ($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'code')
+            && $input_obj->code===200){
+            $this->tts_settings       = $input_obj->result;
+            $this->tts_settings->auth = $this->fillTTSAuthSettings();
+            $arr_textToSpeech         = $input_obj->result->texttospeech;
+        } elseif($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'code')
+            && property_exists($input_obj,'ok')
+            && ($input_obj->ok!==true || $input_obj->code!==200) ) {
+            $errorDescription = 'CRM v5.0 returns error: '.$input_obj->code . PHP_EOL .
+                'Call will be redirected to failover extension';
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        } else {
+            $errorDescription = 'ConnectionToCRMError: Error parse data from 1C:Enterprise API 5.0.' . PHP_EOL .
+                'Call will be redirected to failover extension';
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        }
+        return $arr_textToSpeech;
+    }
+
+    /**
+     * Возвращает имя сотрудника в именительном падеже
+     * @param string $number
+     * @param int    $timeout
+     * @return void
+     */
+    public function getUserInfoV5(string $number, int $timeout=2):?string
+    {
+        if ($this->library_1c !== '5.0') {
+            return null;
+        }
+        $userName = null;
+        $url = "http://127.0.0.1:9222/ivr/employee?number=$number";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $input_json = curl_exec($ch);
+        $input_obj  = json_decode($input_json, false);
+        curl_close($ch);
+
+        if ($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'code')
+            && $input_obj->code===200){
+            $userName       = $input_obj->result->presence[0]??$input_obj->result->name;
+        } elseif($input_json !== null
+            && json_last_error() === JSON_ERROR_NONE
+            && property_exists($input_obj,'code')
+            && property_exists($input_obj,'ok')
+            && ($input_obj->ok!==true || $input_obj->code!==200) ) {
+            $errorDescription = 'CRM get username v5.0 returns error: '.$input_obj->code;
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        } else {
+            $errorDescription = 'ConnectionToCRMError: Error parse data "get username" from 1C:Enterprise API 5.0.';
+            $this->messages[] = $errorDescription;
+            $this->logger->writeError($errorDescription);
+        }
+        return $userName;
+    }
+
+    /**
      * Получаем из 1С IVR меню
      *
      * @param $number string номер по которому делаем запрос
@@ -197,36 +323,9 @@ class WebService1C
         $arr_textToSpeech = null;
         try {
             if ($this->library_1c === '2.0') {
-                $url = "http://127.0.0.1:8224/getivrtext?number={$number}";
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $input_json = curl_exec($ch);
-                $input_obj  = json_decode($input_json, false);
-                curl_close($ch);
-                if ($input_json !== null
-                    && json_last_error() === JSON_ERROR_NONE
-                    && property_exists($input_obj,'result')
-                    && $input_obj->result==='Success'){
-                    $this->tts_settings       = $input_obj->data;
-                    $this->tts_settings->auth = $this->fillTTSAuthSettings();
-                    $arr_textToSpeech         = $input_obj->data->texttospeech;
-                } elseif($input_json !== null
-                    && json_last_error() === JSON_ERROR_NONE
-                    && property_exists($input_obj,'result')
-                    && property_exists($input_obj,'cause')
-                    && $input_obj->result==='Error') {
-                    $errorDescription = 'CRM returns error: '.$input_obj->cause . PHP_EOL .
-                        'Call will be redirected to failover extension';
-                    $this->messages[] = $errorDescription;
-                    $this->logger->writeError($errorDescription);
-                } else {
-                    $errorDescription = 'ConnectionToCRMError: Error parse data from 1C:Enterprise.' . PHP_EOL .
-                        'Call will be redirected to failover extension';
-                    $this->messages[] = $errorDescription;
-                    $this->logger->writeError($errorDescription);
-                }
+                $arr_textToSpeech = $this->getIvrDataV2($number, $timeout);
+            } elseif ($this->library_1c === '5.0') {
+                $arr_textToSpeech = $this->getIvrDataV5($number, $timeout);
             } else {
                 $endpoint = 'MIKO_IVRGenerator4SmartTransfer.1cws';
                 $ivrLink     = "$this->database/ws/$endpoint";
@@ -256,10 +355,10 @@ class WebService1C
      */
     private function fillTTSAuthSettings()
     {
-        $tts_service = $this->tts_settings->tts_service;
+        $tts_service = strtoupper($this->tts_settings->tts_service);
         $result      = [];
         switch ($tts_service) {
-            case 'Yandex':
+            case 'YANDEX':
             {
                 if (property_exists($this->tts_settings, 'api_key')
                     && isset($this->tts_settings->api_key)) {

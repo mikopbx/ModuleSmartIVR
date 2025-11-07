@@ -35,6 +35,7 @@ class MikoTTS implements TTSInterface
             'ermil',
             'alena',
             'filipp',
+            'marina',
         ];
 
         $this->messages = [];

@@ -14,6 +14,7 @@ return [
 
     'module_smivr_LibraryVer1'   => 'Версия 1.0',
     'module_smivr_LibraryVer2'   => 'Версия 2.0/4.0',
+    'module_smivr_LibraryVer5'   => 'Версия 5.0',
     'module_smivr_LibraryVer2NotInstalled' => 'Установите модуль панель телефонии 4.0 для 1С, включите и настройте его',
     'module_smivr_Library1CType' => 'Версия подсистемы интеграции на стороне 1С',
 

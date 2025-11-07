@@ -53,6 +53,7 @@ class ModuleSmartIVRForm extends Form
         $arrLibraryType = [
             '1.0' => $this->translation->_('module_smivr_LibraryVer1'),
             '2.0' => $this->translation->_('module_smivr_LibraryVer2'),
+            '5.0' => $this->translation->_('module_smivr_LibraryVer5'),
         ];
 
         $library = new Select(
