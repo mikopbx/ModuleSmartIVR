@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Використовуватиметься канал зв\'язку з модуля "Панель телефонії 2.0 для 1С"',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Використовуватиметься канал зв\'язку з модуля "Панель телефонії 4.0 для 1С"',
     'module_smivr_FailoverExtForeign' => 'Використовується як аварійний номер у модулі розумної маршрутизації',
     'module_smivr_TimeoutExtForeignKey' => 'Використовується як номер за замовчуванням у модулі розумної маршрутизації',
     'module_smivr_ErrorOnMakeTestIVR' => 'Помилка під час тестової генерації голосового меню',
@@ -25,11 +25,11 @@ return [
     'module_smivr_UseSSLConnection' => 'Використовувати SSL',
     'module_smivr_Server1CHostPort' => 'Адреса та порт сервера 1С',
     'module_smivr_Library1CType' => 'Версія підсистеми інтеграції на боці 1С',
-    'module_smivr_LibraryVer2NotInstalled' => 'Встановіть модуль панель телефонії 2.0 для 1С, увімкніть та налаштуйте його',
+    'module_smivr_LibraryVer2NotInstalled' => 'Встановіть модуль панелі телефонії 4.0 для 1С, увімкніть і налаштуйте його',
     'module_smivr_lastResponsibleDuration' => 'Кількість секунд, як довго дзвонити останньому відповідальному',
     'module_smivr_lastResponsibleTime' => 'Кількість хвилин, за яку слід аналізувати CDR для пошуку відповідального',
     'module_smivr_EnableDebugMode' => 'Увімкнути режим налагодження модуля',
-    'module_smivr_LibraryVer2' => 'Версія 2.0',
+    'module_smivr_LibraryVer2' => 'Версія 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Версія 1.0',
     'SubHeaderModuleSmartIVR' => 'Генерація голосового меню на льоту за даними CRM системи',
     'module_smivr_ValidateTimeoutExtension' => 'Не вказано номер за замовчуванням',

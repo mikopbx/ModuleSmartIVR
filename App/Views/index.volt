@@ -12,6 +12,11 @@
         <label>{{ t._('module_smivr_Library1CType') }}</label>
         {{ form.render('library_1c') }}
     </div>
+    {% if moduleCTI5Installed %}
+        <div class="ui positive message only-five-generation">{{ t._("module_smivr_WeGetSettingsFromCTIClientV5") }}</div>
+    {% else %}
+        <div class="ui negative message only-five-generation">{{ t._("module_smivr_LibraryVer5NotInstalled") }}</div>
+    {% endif %}
     {% if moduleCTI2Installed %}
         <div class="ui positive message only-second-generation">{{ t._("module_smivr_WeGetSettingsFromCTIClient") }}</div>
     {% else %}

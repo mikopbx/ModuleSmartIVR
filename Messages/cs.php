@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Bude použit komunikační kanál z modulu "Telephony Panel 2.0 for 1C".',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Bude použit komunikační kanál z modulu "Telephony Panel 4.0 for 1C".',
     'module_smivr_FailoverExtForeign' => 'Používá se jako nouzové číslo v modulu chytrého směrování',
     'module_smivr_TimeoutExtForeignKey' => 'Používá se jako výchozí číslo v modulu chytrého směrování',
     'module_smivr_ErrorOnMakeTestIVR' => 'Chyba při generování testovacího hlasového menu',
@@ -28,9 +28,9 @@ return [
     'module_smivr_Library1CType' => 'Verze integračního subsystému na straně 1C',
     'module_smivr_lastResponsibleDuration' => 'Počet sekund, jak dlouho volat poslední zodpovědné osobě',
     'module_smivr_lastResponsibleTime' => 'Počet minut, po které by měla být CDR analyzována, aby se našla odpovědná osoba',
-    'module_smivr_LibraryVer2NotInstalled' => 'Nainstalujte modul telefonního panelu 2.0 pro 1C, povolte jej a nakonfigurujte',
+    'module_smivr_LibraryVer2NotInstalled' => 'Nainstalujte modul telefonního panelu 4.0 pro 1C, povolte jej a nakonfigurujte',
     'module_smivr_EnableDebugMode' => 'Povolit režim ladění modulu',
-    'module_smivr_LibraryVer2' => 'Verze 2.0',
+    'module_smivr_LibraryVer2' => 'Verze 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Verze 1.0',
     'SubHeaderModuleSmartIVR' => 'Generování hlasového menu za chodu podle dat CRM systému',
     'BreadcrumbModuleSmartIVR' => 'Modul pro inteligentní směrování hovorů (Smart IVR)',

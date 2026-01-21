@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => '将使用模块“Telephony Panel 2.0 for 1C”的通信通道',
+    'module_smivr_WeGetSettingsFromCTIClient' => '将使用模块“Telephony Panel 4.0 for 1C”的通信通道',
     'module_smivr_FailoverExtForeign' => '在智能路由模块中用作紧急号码',
     'module_smivr_TimeoutExtForeignKey' => '在智能路由模块中用作默认号码',
     'module_smivr_ErrorOnMakeTestIVR' => '语音菜单的测试生成过程中出错',
@@ -27,9 +27,9 @@ return [
     'module_smivr_Library1CType' => '1C侧集成子系统版本',
     'module_smivr_lastResponsibleDuration' => '秒数，呼叫最后一个负责人需要多长时间',
     'module_smivr_lastResponsibleTime' => '应分析 CDR 以找到负责人的分钟数',
-    'module_smivr_LibraryVer2NotInstalled' => '安装1C的电话面板2.0模块，启用并配置',
+    'module_smivr_LibraryVer2NotInstalled' => '安装1C的电话面板4.0模块，启用并配置它',
     'module_smivr_EnableDebugMode' => '启用模块调试模式',
-    'module_smivr_LibraryVer2' => '2.0版',
+    'module_smivr_LibraryVer2' => '2.0/4.0版本',
     'SubHeaderModuleSmartIVR' => '根据 CRM 系统数据即时生成语音菜单',
     'module_smivr_Disconnected1C' => '1C 连接错误',
     'BreadcrumbModuleSmartIVR' => '智能呼叫路由模块（智能 IVR）',

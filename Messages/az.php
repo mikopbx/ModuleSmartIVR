@@ -18,8 +18,8 @@ return [
     'module_smivr_TimeoutExtForeignKey' => 'Ağıllı marşrutlaşdırma modulunda standart nömrə kimi istifadə olunur',
     'module_smivr_FailoverExtForeign' => 'Ağıllı marşrutlaşdırma modulunda təcili yardım nömrəsi kimi istifadə olunur',
     'module_smivr_lastResponsibleDuration' => 'Saniyələrin sayı, son məsul şəxsə nə qədər zəng etmək lazımdır',
-    'module_smivr_LibraryVer2' => 'Versiya 2.0',
-    'module_smivr_LibraryVer2NotInstalled' => '1C üçün telefon paneli 2.0 modulunu quraşdırın, onu işə salın və konfiqurasiya edin',
+    'module_smivr_LibraryVer2' => 'Versiya 2.0/4.0',
+    'module_smivr_LibraryVer2NotInstalled' => '1C üçün telefon paneli 4.0 modulunu quraşdırın, onu işə salın və konfiqurasiya edin',
     'module_smivr_Library1CType' => '1C tərəfində inteqrasiya altsisteminin versiyası',
     'module_smivr_Server1CHostPort' => 'Server ünvanı və port 1C',
     'module_smivr_UseSSLConnection' => 'SSL istifadə edin',
@@ -41,6 +41,6 @@ return [
     'module_smivr_UpdateStatus' => 'Status yeniləməsi',
     'module_smivr_UpdateRecord' => 'Modul statusu dəyişdikdə yenilənən obyektlər:<br>',
     'module_smivr_ErrorOnMakeTestIVR' => 'Səs menyusunun sınaq yaradılması zamanı xəta',
-    'module_smivr_WeGetSettingsFromCTIClient' => '“Telefoniya Paneli 2.0 1C üçün” modulundan rabitə kanalı istifadə olunacaq',
+    'module_smivr_WeGetSettingsFromCTIClient' => '"Telefoniya Paneli 4.0 1C üçün" modulundan rabitə kanalı istifadə olunacaq',
     'module_smivr_lastResponsibleTime' => 'Sahibi tapmaq üçün CDR-ni təhlil etmək üçün dəqiqələrin sayı',
 ];

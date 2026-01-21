@@ -32,6 +32,8 @@ class AGICallLogic extends PbxExtensionBase
     private string $contextInternal = 'internal';
     private string $number;
     private array $messages = [];
+    private int $maxMessagesCount = 100; // Maximum number of messages to store
+    private int $maxMessageLength = 1024; // Maximum length of each message
     private WebService1C $web_service_1C;
     private $count_of_repeat_ivr;
     private $timeout_extension;
@@ -271,10 +273,15 @@ class AGICallLogic extends PbxExtensionBase
             'logger' => $this->logger,
         ];
 
-        switch ($ttsSettings->tts_service) {
-            case 'Yandex':
+        switch (strtoupper($ttsSettings->tts_service)) {
+            case 'YANDEX':
             {
                 $tts = new YandexTTS($settings);
+                break;
+            }
+            case 'MIKO':
+            {
+                $tts = new MikoTTS($settings);
                 break;
             }
             case 'CRT':
@@ -306,9 +313,20 @@ class AGICallLogic extends PbxExtensionBase
      */
     public function Verbose($value): void
     {
+        // Truncate value if it's a string and too long
+        if (is_string($value) && strlen($value) > $this->maxMessageLength) {
+            $value = substr($value, 0, $this->maxMessageLength) . '... [truncated]';
+        }
+        
+        // Add to messages array, keeping only the most recent ones
         $this->messages[] = $value;
+        if (count($this->messages) > $this->maxMessagesCount) {
+            array_shift($this->messages);
+        }
+        
         if ($this->agi !== null) {
-            $this->agi->verbose('SMART IVR VERBOSE: ' . escapeshellarg($value), 3);
+            $truncated_value = is_string($value) ? $value : json_encode($value);
+            $this->agi->verbose('SMART IVR VERBOSE: ' . escapeshellarg($truncated_value), 3);
         }
     }
 
@@ -397,42 +415,44 @@ class AGICallLogic extends PbxExtensionBase
             }
             case 'ConnectionToExtension':
             {
-                $parameters      = [
-                    'models'     => [
-                        'Extensions' => Extensions::class,
-                    ],
-                    'columns'    => [
-                        'username' => 'Users.username',
-                    ],
-                    'conditions' => 'Extensions.number = :extension: AND Extensions.is_general_user_number=1',
-                    'bind'       => [
-                        'extension' => $extension,
-                    ],
-                    'joins'      => [
-                        'Users' => [
-                            0 => Users::class,
-                            1 => 'Users.id=Extensions.userid',
-                            2 => 'Users',
-                            3 => 'INNER',
+                $userName = $this->web_service_1C->getUserInfoV5($extension);
+                if($userName === null){
+                    $parameters      = [
+                        'models'     => [
+                            'Extensions' => Extensions::class,
                         ],
-                    ],
-                    'limit'      => 1,
-                ];
-                $query      = $this->di->get('modelsManager')->createBuilder($parameters)->getQuery();
-                $extensions = $query->execute();
-                $extensionRecord = null;
-                foreach ($extensions as $record) {
-                    $extensionRecord = $record;
-                    break;
+                        'columns'    => [
+                            'username' => 'Users.username',
+                        ],
+                        'conditions' => 'Extensions.number = :extension: AND Extensions.is_general_user_number=1',
+                        'bind'       => [
+                            'extension' => $extension,
+                        ],
+                        'joins'      => [
+                            'Users' => [
+                                0 => Users::class,
+                                1 => 'Users.id=Extensions.userid',
+                                2 => 'Users',
+                                3 => 'INNER',
+                            ],
+                        ],
+                        'limit'      => 1,
+                    ];
+                    $query      = $this->di->get('modelsManager')->createBuilder($parameters)->getQuery();
+                    $extensions = $query->execute();
+                    $extensionRecord = null;
+                    foreach ($extensions as $record) {
+                        $extensionRecord = $record;
+                        break;
+                    }
+                    if ($extensionRecord) {
+                        $userName = $extensionRecord->username;
+                    }
                 }
-                $abonentName     = '';
-                if ($extensionRecord) {
-                    $abonentName = $extensionRecord->username;
-                }
-                if (empty($abonentName)) {
+                if (empty($userName)) {
                     $resultText = 'Соединяю с номером ' . $extension;
                 } else {
-                    $resultText = 'Соединяю с сотрудником ' . $abonentName;
+                    $resultText = 'Соединяю с сотрудником ' . $userName;
                 }
                 break;
             }

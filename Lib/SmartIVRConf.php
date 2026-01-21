@@ -10,7 +10,6 @@ namespace Modules\ModuleSmartIVR\Lib;
 
 use MikoPBX\Common\Models\Extensions;
 use MikoPBX\Common\Models\ModelsBase;
-use MikoPBX\Core\System\Util;
 use MikoPBX\Modules\Config\ConfigClass;
 use MikoPBX\Core\System\PBX;
 use MikoPBX\PBXCoreREST\Lib\PBXApiResult;

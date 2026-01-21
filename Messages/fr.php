@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Le canal de communication du module "Telephony Panel 2.0 for 1C" sera utilisé',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Le canal de communication du module "Telephony Panel 4.0 pour 1C" sera utilisé',
     'module_smivr_FailoverExtForeign' => 'Utilisé comme numéro d\'urgence dans le module de routage intelligent',
     'module_smivr_TimeoutExtForeignKey' => 'Utilisé comme numéro par défaut dans le module de routage intelligent',
     'module_smivr_ErrorOnMakeTestIVR' => 'Erreur lors de la génération de test du menu vocal',
@@ -26,11 +26,11 @@ return [
     'module_smivr_UseSSLConnection' => 'Utiliser SSL',
     'module_smivr_Server1CHostPort' => 'Adresse et port du serveur 1C',
     'module_smivr_Library1CType' => 'Version du sous-système d\'intégration côté 1C',
-    'module_smivr_LibraryVer2NotInstalled' => 'Installez le module de panneau de téléphonie 2.0 pour 1C, activez-le et configurez-le',
+    'module_smivr_LibraryVer2NotInstalled' => 'Installez le module du panneau de téléphonie 4.0 pour 1C, activez-le et configurez-le',
     'module_smivr_lastResponsibleDuration' => 'Nombre de secondes, combien de temps pour appeler le dernier responsable',
     'module_smivr_lastResponsibleTime' => 'Le nombre de minutes pendant lesquelles le CDR doit être analysé pour trouver le responsable',
     'module_smivr_EnableDebugMode' => 'Activer le mode de débogage du module',
-    'module_smivr_LibraryVer2' => 'Version 2.0',
+    'module_smivr_LibraryVer2' => 'Version 2.0/4.0',
     'module_smivr_LibraryVer1' => 'Version 1.0',
     'SubHeaderModuleSmartIVR' => 'Génération d\'un menu vocal à la volée en fonction des données du système CRM',
     'BreadcrumbModuleSmartIVR' => 'Module de routage d\'appels intelligent (Smart IVR)',

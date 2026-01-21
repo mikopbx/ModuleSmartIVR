@@ -1,6 +1,6 @@
 <?php
 return [
-    'module_smivr_WeGetSettingsFromCTIClient' => 'Kommunikationskanalen fra modulet "Telefonipanel 2.0 for 1C" vil blive brugt',
+    'module_smivr_WeGetSettingsFromCTIClient' => 'Kommunikationskanalen fra modulet "Telefonipanel 4.0 for 1C" vil blive brugt',
     'module_smivr_FailoverExtForeign' => 'Anvendes som nødnummer i smart routing-modul',
     'module_smivr_TimeoutExtForeignKey' => 'Bruges som standardnummer i smart routing-modul',
     'module_smivr_ErrorOnMakeTestIVR' => 'Fejl under testgenerering af stemmemenuen',
@@ -28,7 +28,7 @@ return [
     'module_smivr_Library1CType' => 'Integrationsdelsystemversion på 1C-siden',
     'module_smivr_lastResponsibleDuration' => 'Antal sekunder, hvor længe skal du ringe til den sidste ansvarlige',
     'module_smivr_lastResponsibleTime' => 'Det antal minutter, som CDR\'en skal analyseres for for at finde den ansvarlige',
-    'module_smivr_LibraryVer2NotInstalled' => 'Installer telefonipanel 2.0-modulet til 1C, aktiver og konfigurer det',
+    'module_smivr_LibraryVer2NotInstalled' => 'Installer telefonipanel 4.0-modulet til 1C, aktiver og konfigurer det',
     'module_smivr_EnableDebugMode' => 'Aktiver modulfejlfindingstilstand',
     'module_smivr_LibraryVer1' => 'Version 1.0',
     'SubHeaderModuleSmartIVR' => 'Generering af en stemmemenu på farten i henhold til CRM-systemdata',
@@ -42,5 +42,5 @@ return [
  */
     'mo_ModuleSmartIVR' => 'Smart routing modul',
     'module_smivr_Disconnected1C' => 'Forbindelsesfejl med 1C',
-    'module_smivr_LibraryVer2' => 'Version 2.0',
+    'module_smivr_LibraryVer2' => 'Version 2.0/4.0',
 ];

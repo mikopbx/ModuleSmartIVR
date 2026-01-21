@@ -69,6 +69,11 @@ class ModuleSmartIVRController extends BaseController
         ];
         $this->view->moduleCTI2Installed = PbxExtensionModules::count($parameters)>0;
 
+        $parameters = [
+            'conditions'=>'uniqid="ModuleCTIClientV5" and disabled!="1"'
+        ];
+        $this->view->moduleCTI5Installed = PbxExtensionModules::count($parameters)>0;
+
         $options = [
             'extensions' => $forwardingExtensions
         ];
