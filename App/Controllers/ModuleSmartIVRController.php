@@ -12,6 +12,7 @@ use MikoPBX\AdminCabinet\Controllers\BaseController;
 use MikoPBX\Common\Models\Extensions;
 use MikoPBX\Common\Models\PbxExtensionModules;
 use MikoPBX\Modules\PbxExtensionUtils;
+use Modules\ModuleSmartIVR\Lib\MikoPBXVersion;
 use Modules\ModuleSmartIVR\Models\ModuleSmartIVR;
 use Modules\ModuleSmartIVR\App\Forms\ModuleSmartIVRForm;
 
@@ -39,7 +40,17 @@ class ModuleSmartIVRController extends BaseController
     {
         $footerCollection = $this->assets->collection('footerJS');
         $footerCollection->addJs('js/pbx/main/form.js', true);
-        $footerCollection->addJs('js/pbx/Extensions/extensions.js', true);
+
+        // Version-dependent JS loading
+        if (MikoPBXVersion::hasExtensionSelector()) {
+            // New version (2025.1.1+): Use extension-selector component
+            $footerCollection->addJs('js/pbx/FormElements/extension-selector.js', true);
+        } else {
+            // Legacy version: Use old Extensions dropdown API
+            // Note: extensions-api.js is already loaded globally via AssetProvider
+            // No need to load non-existent extensions.js
+        }
+
         $footerCollection->addJs("js/cache/{$this->moduleUniqueID}/module-smartivr-index.js", true);
 
         $settings = ModuleSmartIVR::findFirst();
@@ -47,21 +58,30 @@ class ModuleSmartIVRController extends BaseController
             $settings = new ModuleSmartIVR();
         }
 
-        // Список всех используемых эктеншенов
-        $forwardingExtensions[''] = $this->translation->_('ex_SelectNumber');
-        $parameters               = [
-            'conditions' => 'number IN ({ids:array})',
-            'bind'       => [
-                'ids' => [
-                    $settings->failover_extension,
-                    $settings->timeout_extension,
+        // Prepare extension list based on version
+        $forwardingExtensions = [];
+
+        if (MikoPBXVersion::hasExtensionSelector()) {
+            // New version: Pass empty array, ExtensionSelector will load data via API
+            $forwardingExtensions = [];
+        } else {
+            // Legacy version: Pre-populate extension list for dropdown
+            $forwardingExtensions[''] = $this->translation->_('ex_SelectNumber');
+            $parameters               = [
+                'conditions' => 'number IN ({ids:array})',
+                'bind'       => [
+                    'ids' => [
+                        $settings->failover_extension,
+                        $settings->timeout_extension,
+                    ],
                 ],
-            ],
-        ];
-        $extensions               = Extensions::find($parameters);
-        foreach ($extensions as $record) {
-            $forwardingExtensions[$record->number] = $record ? $record->getRepresent() : '';
+            ];
+            $extensions               = Extensions::find($parameters);
+            foreach ($extensions as $record) {
+                $forwardingExtensions[$record->number] = $record ? $record->getRepresent() : '';
+            }
         }
+
         $this->view->extension = $settings->extension;
 
         $parameters = [
@@ -75,7 +95,8 @@ class ModuleSmartIVRController extends BaseController
         $this->view->moduleCTI5Installed = PbxExtensionModules::count($parameters)>0;
 
         $options = [
-            'extensions' => $forwardingExtensions
+            'extensions' => $forwardingExtensions,
+            'useExtensionSelector' => MikoPBXVersion::hasExtensionSelector()
         ];
 
         $this->view->form = new ModuleSmartIVRForm($settings, $options);

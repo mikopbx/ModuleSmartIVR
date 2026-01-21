@@ -34,6 +34,24 @@ class MikoPBXVersion
     }
 
     /**
+     * Check if current MikoPBX version supports new extension-selector component
+     *
+     * Version 2025.1.1+ includes the new ExtensionSelector component that replaces
+     * the old dropdown mechanism with:
+     * - Dynamic dropdown builder
+     * - Extension type filtering
+     * - Better search capabilities
+     * - Improved UI/UX
+     *
+     * @return bool True if version supports extension-selector (2025.1.1+)
+     */
+    public static function hasExtensionSelector(): bool
+    {
+        $pbxVersion = PbxSettings::getValueByKey('PBXVersion');
+        return version_compare($pbxVersion, '2025.1.1', '>=');
+    }
+
+    /**
      * Return Di interface for the current version of PBX
      * @return \Phalcon\Di\DiInterface|null
      */

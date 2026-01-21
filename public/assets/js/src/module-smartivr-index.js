@@ -5,11 +5,12 @@
  * Written by Alexey Portnov, 2 2019
  */
 
-/* global globalRootUrl,globalTranslate, Extensions, Form, Config, UserMessage */
+/* global globalRootUrl,globalTranslate, Extensions, ExtensionSelector, Form, Config, UserMessage */
 const moduleSmartIVR = {
 	$formObj: $('#module-smart-ivr-form'),
 	$statusToggle: $('#module-status-toggle'),
 	$forwardingSelect: $('.forwarding-select'),
+	$extensionSelector: $('.extension-selector'),
 	$LibrarySelect: $('#library_1c'),
 	$onlyFirstGeneration: $('.only-first-generation'),
 	$onlySecondGeneration: $('.only-second-generation'),
@@ -90,7 +91,25 @@ const moduleSmartIVR = {
 		moduleSmartIVR.cbChangeLibraryType();
 		moduleSmartIVR.checkStatusToggle();
 		window.addEventListener('ModuleStatusChanged', moduleSmartIVR.checkStatusToggle);
-		moduleSmartIVR.$forwardingSelect.dropdown(Extensions.getDropdownSettingsWithoutEmpty());
+
+		// Version-dependent extension selector initialization
+		if (typeof ExtensionSelector !== 'undefined' && moduleSmartIVR.$extensionSelector.length > 0) {
+			// New version (2025.1.1+): Use ExtensionSelector component
+			moduleSmartIVR.$extensionSelector.each(function() {
+				const $input = $(this);
+				new ExtensionSelector($input, {
+					fieldId: $input.attr('id'),
+					fieldClass: 'extension-selector',
+					attributes: {
+						'data-value': $input.data('value') || '',
+					}
+				});
+			});
+		} else if (moduleSmartIVR.$forwardingSelect.length > 0) {
+			// Legacy version: Use old Extensions dropdown API
+			moduleSmartIVR.$forwardingSelect.dropdown(Extensions.getDropdownSettingsWithoutEmpty());
+		}
+
 		moduleSmartIVR.$LibrarySelect.dropdown({onChange: moduleSmartIVR.cbChangeLibraryType});
 		moduleSmartIVR.initializeForm();
 	},

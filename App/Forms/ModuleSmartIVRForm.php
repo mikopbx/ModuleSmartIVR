@@ -72,33 +72,57 @@ class ModuleSmartIVRForm extends Form
         $this->add($library);
 
         // FailOver Extension
-        $extension = new Select(
-            'failover_extension',
-            $options['extensions'],
-            [
-            'using'    => [
-                'id',
-                'name',
-            ],
-            'useEmpty' => false,
-            'class'    => 'ui selection dropdown search forwarding-select',
-            ]
-        );
+        if ($options['useExtensionSelector'] ?? false) {
+            // New version (2025.1.1+): Use text input, ExtensionSelector will be initialized via JS
+            $extension = new Text(
+                'failover_extension',
+                [
+                    'class' => 'extension-selector',
+                    'data-value' => $entity->failover_extension ?? '',
+                ]
+            );
+        } else {
+            // Legacy version: Use traditional Select dropdown
+            $extension = new Select(
+                'failover_extension',
+                $options['extensions'],
+                [
+                    'using'    => [
+                        'id',
+                        'name',
+                    ],
+                    'useEmpty' => false,
+                    'class'    => 'ui selection dropdown search forwarding-select',
+                ]
+            );
+        }
         $this->add($extension);
 
         // Timeout Extension
-        $extension = new Select(
-            'timeout_extension',
-            $options['extensions'],
-            [
-            'using'    => [
-                'id',
-                'name',
-            ],
-            'useEmpty' => false,
-            'class'    => 'ui selection dropdown search forwarding-select',
-            ]
-        );
+        if ($options['useExtensionSelector'] ?? false) {
+            // New version (2025.1.1+): Use text input, ExtensionSelector will be initialized via JS
+            $extension = new Text(
+                'timeout_extension',
+                [
+                    'class' => 'extension-selector',
+                    'data-value' => $entity->timeout_extension ?? '',
+                ]
+            );
+        } else {
+            // Legacy version: Use traditional Select dropdown
+            $extension = new Select(
+                'timeout_extension',
+                $options['extensions'],
+                [
+                    'using'    => [
+                        'id',
+                        'name',
+                    ],
+                    'useEmpty' => false,
+                    'class'    => 'ui selection dropdown search forwarding-select',
+                ]
+            );
+        }
         $this->add($extension);
 
         $this->addCheckBox('debug_mode', intval($entity->debug_mode) === 1);
