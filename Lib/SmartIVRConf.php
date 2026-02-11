@@ -89,7 +89,7 @@ class SmartIVRConf extends ConfigClass
         $action         = strtoupper($request['action']);
         switch ($action) {
             case 'CHECK':
-                // Проверка работы сервисов, выполняется при обновлении статуса или сохрании настроек
+                // Проверка работы сервисов, выполняется при обновлении статуса или сохранении настроек
                 $ivr = new AGICallLogic();
                 $res = $ivr->selfTest();
                 break;

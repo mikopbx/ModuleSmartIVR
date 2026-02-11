@@ -49,7 +49,17 @@ class WebService1C
     {
             try {
                 if ($this->library_1c === '2.0') {
-                    $url = "http://127.0.0.1:8224/setcallbacknumber?number={$number}";
+                    $url = "http://127.0.0.1:8224/setcallbacknumber?number=$number";
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, []);
+                    $result = curl_exec($ch);
+                    curl_close($ch);
+                } elseif ($this->library_1c === '5.0') {
+                    $url = "http://127.0.0.1:9222/ivr/setcallbacknumber?number=$number";
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
@@ -65,9 +75,7 @@ class WebService1C
                     $ivrFunction = 'setcallbacknumber';
                     $result = $this->post1cSoapRequest($number, $ivrLink, $ivrFunction, $ivrUri);
                 }
-                $this->logger->writeInfo(
-                    "1C:Enterprise answered '{$result}' on setcallbacknumber post extension '{$number}'"
-                );
+                $this->logger->writeInfo( "1C:Enterprise answered '{$result}' on setcallbacknumber post extension '{$number}', library_1c: '{$this->library_1c}'");
             } catch (\Exception $e) {
                 $this->logger->writeError(
                     'ConnectionToCRMError: on send SmartIVR extension to 1C:Enterprise' . PHP_EOL . $e->getMessage()
