@@ -60,7 +60,8 @@ class ModuleSmartIVRController extends BaseController
         ];
         $extensions               = Extensions::find($parameters);
         foreach ($extensions as $record) {
-            $forwardingExtensions[$record->number] = $record ? $record->getRepresent() : '';
+            // Phalcon 5.23 escapes <option> text, so drop the icon markup from the label.
+            $forwardingExtensions[$record->number] = preg_replace('/^(?:<\/?i\b[^>]*>\s*)+/', '', $record->getRepresent());
         }
         $this->view->extension = $settings->extension;
 
